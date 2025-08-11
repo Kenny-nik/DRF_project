@@ -1,8 +1,5 @@
 import os
 from pathlib import Path
-from tkinter.constants import BEVEL
-
-from django.conf.global_settings import MEDIA_URL, MEDIA_ROOT
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -60,7 +57,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": os.getenv("NAME"),
         "USER": os.getenv("USER"),
         "PASSWORD": os.getenv("PASSWORD"),
@@ -97,9 +94,10 @@ USE_TZ = True
 
 
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BEVEL, 'media')
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR, "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = "users.User"
