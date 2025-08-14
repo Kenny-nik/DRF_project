@@ -1,15 +1,9 @@
-from rest_framework import serializers
+from django.contrib import admin
+from users.models import User, Payments
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    exclude = ("password",)
 
-from users.models import User
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        exclude = (
-            "password",
-            "is_staff",
-            "is_superuser",
-            "last_login",
-            "date_joined",
-        )
+@admin.register(Payments)
+class PaymentsAdmin(admin.ModelAdmin):
+    fields = ("user", "payment_date", "paid_course", "paid_lesson", "payment_amount", "payment_method")
