@@ -1,4 +1,5 @@
 from django.db import models
+from config import settings
 
 
 class Course(models.Model):
@@ -7,6 +8,13 @@ class Course(models.Model):
         upload_to="education/courses/preview", blank=True, null=True
     )
     description = models.TextField(verbose_name="Описание курса")
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Владелец курса",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.title
@@ -26,6 +34,13 @@ class Lesson(models.Model):
         upload_to="education/lessons/preview", blank=True, null=True
     )
     video_url = models.URLField(verbose_name="Ссылка на видео")
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Владелец урока",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.title
@@ -33,3 +48,13 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = "Урок"
         verbose_name_plural = "Уроки"
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name="subscriptions", verbose_name="Курс"
+    )
+    is_active = models.BooleanField(default=False)
