@@ -134,7 +134,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_BEAT_SCHEDULE = {
     "last_visit": {
-        "task": "education.tasks.update_course_mail",
+        "task": "education.tasks.last_visit",
         "schedule": timedelta(weeks=4),
     }
 }
