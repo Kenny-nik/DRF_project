@@ -18,12 +18,12 @@ services:
       - REDIS_URL=${LOCATION}
 
   db:
-    image: postgres:16
+    image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: 1234567890
       POSTGRES_DB: ${DB_NAME}
 
   redis:
