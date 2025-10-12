@@ -29,5 +29,40 @@ services:
   redis:
     image: redis:latest
 
+  celery_worker:
+    build: .
+    command: celery -A DRF_project worker --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+  celery_beat:
+    build: .
+    command: celery -A DRF_project beat --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    build: .
+    command: celery -A DRF_project flower --port=5555
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - db
+
 volumes:
   postgres_data:
