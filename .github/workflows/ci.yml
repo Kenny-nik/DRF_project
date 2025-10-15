@@ -40,7 +40,7 @@ jobs:
           --health-retries 5
 
       redis:
-        image: redis:7
+        image: redis:6
         options: >-
           --health-cmd "redis-cli ping || exit 1"
           --health-interval 10s
