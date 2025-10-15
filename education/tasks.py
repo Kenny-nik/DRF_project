@@ -1,7 +1,7 @@
 from celery import shared_task
-from education.models import Subscription
+# from education.models import Subscription
 from django.core.mail import send_mail
-from config import settings
+# from config import settings
 from users.models import User
 from django.utils import timezone
 from datetime import timedelta
@@ -20,13 +20,16 @@ def last_visit():
 @shared_task
 def update_course_mail(course_id):
     from education.models import Course
+
     course = Course.objects.get(pk=course_id)
     send_mail(
         subject=f"Курс {course.title} обновлён",
         message=f"Описание: {course.description}",
         from_email="admin@example.com",
-        recipient_list=["user@example.com"]
+        recipient_list=["user@example.com"],
     )
+
+
 # def update_course_mail(course_id):
 #     subscription_course = Subscription.objects.filter(course=course_id)
 #     sub_list = [sub.user.email for sub in subscription_course]
