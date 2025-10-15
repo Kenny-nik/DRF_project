@@ -27,8 +27,8 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
-        image: postgres:14
+      db:
+        image: postgres:17
         env:
           POSTGRES_DB: catalog_db
           POSTGRES_USER: postgres
@@ -41,14 +41,32 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
+      SECRET_KEY: test-secret-key-for-ci-only
+      DEBUG: "False"
       DB_NAME: catalog_db
       DB_USER: postgres
       DB_PASSWORD: 1234567890
-      DB_HOST: 127.0.0.1
+      DB_HOST: db
       DB_PORT: 5432
-      SECRET_KEY: test-secret-key-for-ci-only
-      DEBUG: "False"
+      POSTGRES_DB: catalog_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234567890
+      POSTGRES_HOST: db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      REDIS_URL: redis://redis:6379/0
+      DJANGO_SETTINGS_MODULE: config.settings
 
     steps:
       - name: Check out code
@@ -77,13 +95,11 @@ jobs:
           python - <<'PY'
           import time, os, sys
           import psycopg2
-
           dbname = os.getenv("DB_NAME", "catalog_db")
           user = os.getenv("DB_USER", "postgres")
           password = os.getenv("DB_PASSWORD", "1234567890")
-          host = os.getenv("DB_HOST", "127.0.0.1")
+          host = os.getenv("DB_HOST", "db")
           port = int(os.getenv("DB_PORT", "5432"))
-
           for i in range(30):
               try:
                   conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
@@ -97,6 +113,17 @@ jobs:
               print("Postgres did not become available in time", file=sys.stderr)
               sys.exit(1)
           PY
+
+      - name: Wait for Redis
+        run: |
+          for i in {1..20}; do
+            if redis-cli -h redis ping; then
+              echo "Redis is ready"
+              break
+            fi
+            echo "Waiting for Redis... ($i)"
+            sleep 1
+          done
 
       - name: Run migrations
         run: python manage.py migrate
