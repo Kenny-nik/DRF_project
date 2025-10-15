@@ -39,7 +39,7 @@ class CourseViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         updated_course = serializer.save()
-        update_course_mail.delay(updated_course)
+        update_course_mail.delay(updated_course.id)
         updated_course.save()
 
 
