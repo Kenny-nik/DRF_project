@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
+      db:
         image: postgres:17
         env:
           POSTGRES_DB: catalog_db
@@ -51,7 +51,7 @@ jobs:
       DB_NAME: catalog_db
       DB_USER: postgres
       DB_PASSWORD: 1234567890
-      DB_HOST: postgres
+      DB_HOST: db
       DB_PORT: 5432
       SECRET_KEY: test-secret-key-for-ci-only
       DEBUG: "False"
