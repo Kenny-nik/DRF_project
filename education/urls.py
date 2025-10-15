@@ -1,7 +1,6 @@
 from django.urls import path
 from education.apps import EducationConfig
 from rest_framework.routers import DefaultRouter
-
 from education.views import (
     CourseViewSet,
     LessonCreateAPIView,
@@ -9,13 +8,12 @@ from education.views import (
     LessonRetrieveAPIView,
     LessonUpdateAPIView,
     LessonDestroyAPIView,
+    SubscriptionCreateAPIView,
 )
 
 app_name = EducationConfig.name
-
 router = DefaultRouter()
 router.register(r"courses", CourseViewSet, basename="courses")
-
 urlpatterns = [
     path("lessons/", LessonListAPIView.as_view(), name="lesson-list"),
     path("lessons/create/", LessonCreateAPIView.as_view(), name="lesson-create"),
@@ -26,4 +24,5 @@ urlpatterns = [
     path(
         "lessons/<int:pk>/delete/", LessonDestroyAPIView.as_view(), name="lesson-delete"
     ),
+    path("subscription/", SubscriptionCreateAPIView.as_view(), name="subscription"),
 ] + router.urls
