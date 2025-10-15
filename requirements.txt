@@ -22,7 +22,7 @@ djangorestframework==3.15.2
 djangorestframework_simplejwt==5.5.0
 dnspython==2.7.0
 drf-yasg==1.21.10
-eventlet==0.39.1
+eventlet==0.40.3
 executing==2.2.0
 greenlet==3.2.1
 idna==3.10
@@ -53,7 +53,7 @@ python-dotenv==1.1.0
 pytz==2025.2
 PyYAML==6.0.2
 redis==6.0.0
-requests==2.32.3
+requests==2.32.4
 six==1.17.0
 sqlparse==0.5.3
 stack-data==0.6.3
@@ -62,7 +62,7 @@ traitlets==5.14.3
 typing_extensions==4.13.2
 tzdata==2025.2
 uritemplate==4.1.1
-urllib3==2.4.0
+urllib3==2.5.0
 vine==5.1.0
 wcwidth==0.2.13
 gunicorn==23.0.0
