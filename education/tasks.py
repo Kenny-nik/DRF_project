@@ -16,6 +16,7 @@ def last_visit():
             print(f"Блокировка {user.email}")
             user.save()
 
+
 @shared_task
 def update_course_mail(course_id):
     subscription_course = Subscription.objects.filter(course=course_id)

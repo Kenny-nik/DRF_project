@@ -28,7 +28,6 @@ class CourseSerializer(ModelSerializer):
         # fields = ('id', 'title', 'preview', 'description', 'lessons_count', 'lessons')
         fields = "__all__"
 
-
     def get_lessons_count(self, course):
         return course.Уроки.count()
 
